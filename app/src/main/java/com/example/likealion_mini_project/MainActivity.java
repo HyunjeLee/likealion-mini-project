@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Student> studentArrayList = new ArrayList<>();
     ArrayList<Student> studentBackupArrayList;
 
+    long initTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (System.currentTimeMillis() - initTime > 3000) {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.main_back_end),Toast.LENGTH_SHORT).show();
+                    initTime = System.currentTimeMillis();
+                } else finish();
+            }
+        });
+
 
     }
 
