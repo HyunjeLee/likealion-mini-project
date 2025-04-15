@@ -67,6 +67,12 @@ public class DetailActivity extends AppCompatActivity {
         bindInitialStudentData(id);
         bindInitialScoreData(id);
 
+        // 커스텀뷰에 score set
+        if (!scoreList.isEmpty()) {
+            int firstScore = Integer.parseInt(scoreList.get(0).get("score"));
+            binding.cvDonut.setScore(firstScore);
+        }
+
         ActivityResultLauncher<Intent> addScoreLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -83,10 +89,12 @@ public class DetailActivity extends AppCompatActivity {
                         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
                         map.put("date", sd.format(d));
 
-                        scoreList.add(map);
+                        scoreList.add(0, map);
                         //새로운 항목 데이터가 추가된 것이다..
                         //adapter 가 이미 항목을 만들어 놓았을 것이다.. 변경사항이 있다고 알려준다..
                         adapter.notifyDataSetChanged();
+
+                        binding.cvDonut.setScore(Integer.parseInt(score));
                     }
                     if (result.getResultCode() == RESULT_CANCELED) {  // 시스템 백버튼 등
 
@@ -196,7 +204,7 @@ public class DetailActivity extends AppCompatActivity {
     private void bindInitialScoreData(int id) {
         DBHelper helper = new DBHelper(this);
         SQLiteDatabase database = helper.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select score, date from tb_score where student_id = ? order by date",
+        Cursor cursor = database.rawQuery("select score, date from tb_score where student_id = ? order by date desc",
                 new String[]{String.valueOf(id)});
 
         scoreList = new ArrayList<>();
