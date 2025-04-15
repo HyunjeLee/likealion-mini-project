@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     MainAdapter mainAdapter;
 
     ArrayList<Student> studentArrayList = new ArrayList<>();
+    ArrayList<Student> studentBackupArrayList;
 
 
     @Override
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         //adapter에 넘긴 항목 구성 데이터에 추가한 후에..
                         //변경사항 반영해.. 명령내리면 된다..
                         studentArrayList.add(student);
+                        studentBackupArrayList.add(student);
                         mainAdapter.notifyDataSetChanged();
                     }
                 }
@@ -111,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
             studentArrayList.add(student);
         }
+        studentBackupArrayList = new ArrayList<>(studentArrayList);
     }
 
     private void makeRecyclerView() {
@@ -146,6 +150,56 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // 메뉴 출력
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem menuItemSearch = menu.findItem(R.id.menu_main_search);
+        SearchView searchView = (SearchView) menuItemSearch.getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.main_search_hint));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // newText에 따라 recyclerview 업데이트
+                // 지금 있는 studentArrayList 사용
+                if (newText.isEmpty()) {
+                    studentArrayList.clear();
+                    studentArrayList.addAll(studentBackupArrayList);
+
+                    mainAdapter.notifyDataSetChanged();
+                } else {
+                    studentArrayList.clear();
+                    // 그때그때 db에서 조건에 맞는 객체 뽑아오기
+                    DBHelper helper = new DBHelper(MainActivity.this);
+                    SQLiteDatabase db = helper.getReadableDatabase();
+
+                    Cursor cursor = db.rawQuery(
+                            "SELECT * FROM tb_student WHERE name LIKE ? ORDER BY name",
+                            new String[]{ "%" + newText + "%" }
+                    );  // newText를 포함하는 name select
+
+                    while (cursor.moveToNext()) {
+                        Student student = new Student(
+                                cursor.getInt(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(5),
+                                cursor.getString(4)  // fixme: 모델과 db간 순서 맞출 것
+                        );
+                        studentArrayList.add(student);
+                    }
+                    mainAdapter.notifyDataSetChanged();
+                }
+
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
