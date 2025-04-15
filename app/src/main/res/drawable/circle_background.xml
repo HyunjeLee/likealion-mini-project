@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+이미지를 여러 레이어로 겹쳐서 하나의 이미지를 만들고자 함
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+    이 이미지가 적용되는 뷰
+    그 뷰의 사이즈에서 이 레이어가 차지 하는 영역 설정
+    양수는 뷰 안 쪽으로
+    음수는 뷰 밖으로
+    -->
+    <item
+        android:bottom="-10dp"
+        android:left="-10dp"
+        android:right="-10dp"
+        android:top="-10dp">
+        <shape android:shape="oval">
+            <stroke
+                android:width="10dp"
+                android:color="@color/white"/>
+        </shape>
+    </item>
+
+
+</layer-list>

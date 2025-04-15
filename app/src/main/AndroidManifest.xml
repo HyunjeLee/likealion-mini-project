@@ -2,6 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+<!--    유저의 파일을 접근하기 위해 권한 요청
+        읽기 / 쓰기 에 대한 권한 따로 따로 요청해야됨
+-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
+<!--api level 33 부터는 타입별로 권한 따로 지정해야함. 이미지, 오디오 등-->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +26,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Likealionminiproject"
         tools:targetApi="31">
+        <activity
+            android:name=".AddScoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddStudentActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
