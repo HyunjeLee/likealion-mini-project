@@ -7,11 +7,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -166,6 +169,30 @@ public class DetailActivity extends AppCompatActivity {
         );
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_detail_share) {
+            // SMS 전송 대기
+            // score:&date &score
+            if (scoreList.isEmpty()) {
+                // todo: dialog 추가
+            } else {
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + student.getPhone()));
+                intent.putExtra("sms_body", "score:" + scoreList.get(0).get("date") + " " + scoreList.get(0).get("score"));
+                startActivity(intent);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void bindInitialStudentData(int id) {

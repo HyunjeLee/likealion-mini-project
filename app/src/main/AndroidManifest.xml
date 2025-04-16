@@ -8,6 +8,8 @@
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
 <!--    유저의 파일을 접근하기 위해 권한 요청
         읽기 / 쓰기 에 대한 권한 따로 따로 요청해야됨
 -->
