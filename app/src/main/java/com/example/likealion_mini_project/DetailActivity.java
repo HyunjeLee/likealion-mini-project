@@ -27,6 +27,7 @@ import com.example.likealion_mini_project.util.BitmapUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,6 +112,20 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("id", id);
                 addScoreLauncher.launch(intent);
             }
+        });
+
+        binding.btnShowScoreChart.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailActivity.this, ChartActivity.class);
+            intent.putExtra("name", student.getName());
+            // 점수 arraylist도 넘겨줘야함  // todo: ❓❓❓ 보통 intent로 보내나? 아님 db에서 긁어 ? ❓❓❓
+            // intent로 scoreList 생성해서 점수만 보내기 // 오름차순
+            ArrayList<Integer> onlyScoreArrayList = new ArrayList<>();
+            for (Map<String, String> scoreMap: scoreList) {
+                onlyScoreArrayList.add(Integer.parseInt(scoreMap.get("score")));
+            }
+            Collections.reverse(onlyScoreArrayList);
+            intent.putIntegerArrayListExtra("scoreArrayList", onlyScoreArrayList);
+            startActivity(intent);
         });
 
         // callback end

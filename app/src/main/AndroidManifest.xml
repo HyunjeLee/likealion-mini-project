@@ -27,6 +27,9 @@
         android:theme="@style/Theme.Likealionminiproject"
         tools:targetApi="31">
         <activity
+            android:name=".ChartActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddScoreActivity"
             android:exported="false" />
         <activity

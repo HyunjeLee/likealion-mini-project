@@ -89,6 +89,20 @@
         tools:layout_editor_absoluteX="180dp"
         tools:layout_editor_absoluteY="371dp" />
 
+    <Button
+        android:id="@+id/btn_show_score_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="score chart"
+        app:layout_constraintEnd_toStartOf="@id/btn_add_score"
+        app:layout_constraintBottom_toBottomOf="@id/btn_add_score"
+        app:layout_constraintTop_toTopOf="@id/btn_add_score"
+        android:layout_marginEnd="16dp"
+        android:minHeight="30dp"
+        android:padding="1dp"
+        android:textColor="#555555"
+        android:background="@drawable/outline_button" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_detail"
         android:layout_width="0dp"
