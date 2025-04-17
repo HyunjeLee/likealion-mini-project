@@ -44,7 +44,6 @@ public class ChartActivity extends AppCompatActivity {
         WebSettings settings = binding.wvChart.getSettings();
         settings.setJavaScriptEnabled(true);
         binding.wvChart.loadUrl("file:///android_asset/test.html");
-        binding.wvChart.loadUrl("javascript:lineChart()");
 
         binding.wvChart.addJavascriptInterface(new JavaScriptChart(), "android");
 
